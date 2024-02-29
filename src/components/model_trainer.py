@@ -6,6 +6,7 @@ import numpy as np
 import seaborn as sns
 from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix
 
+
 class ModelTrainer:
     def __init__(self, model, train_loader, val_loader, criterion, optimizer, lr_scheduler, device):
         """
@@ -101,9 +102,9 @@ class ModelTrainer:
         return epoch_loss
 
     def fit(self, epochs):
-        if isinstance(self.model, AutoEncoder):
+        if self.model.__class__.__name__ == "AutoEncoder":
             model_filename = "AutoEncoder_best.pth"
-        elif isinstance(self.model, Classifier):
+        elif self.model.__class__.__name__ == "Classifier":
             model_filename = "Classifier_best.pth"
         else:
             raise ValueError("Model type not recognized. Please provide a valid model type.")
