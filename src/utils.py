@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def visualise_reconstruction(autoencoder, loader):
+def visualise_reconstruction(autoencoder, loader, save_path=None):
     """
     Visualizes the original and reconstructed images produced by an autoencoder.
     
@@ -31,6 +31,9 @@ def visualise_reconstruction(autoencoder, loader):
             plt.title("Reconstruction")  
             plt.axis('off')  
         
-        plt.tight_layout()  
-        plt.show()
+        if save_path:
+            plt.savefig(save_path)
+        else:
+            plt.show()
+        plt.close()
         break  
