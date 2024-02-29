@@ -48,16 +48,9 @@ class AutoEncoderDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        image, _ = self.data[idx]
-        clean_image = self.transform(image)
-        
-        # Inject Gaussian noise
-        noise = torch.randn(clean_image.size()) * 0.2  
-        noisy_image = clean_image + noise
-        noisy_image = torch.clamp(noisy_image, -1., 1.) 
-        
-        return noisy_image, clean_image
-
+        image, label = self.data[idx]
+        image = self.transform(image)
+        return image, image
 
 class ClassifierDataset(Dataset):
     def __init__(self, type_data="train"):

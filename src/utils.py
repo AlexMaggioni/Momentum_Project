@@ -1,50 +1,36 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def visualise_reconstruction(autoencoder, loader, save_path=None):
+def visualise_reconstruction(autoencoder, loader):
     """
-    Visualizes the original, noisy, and reconstructed images produced by an autoencoder.
-
+    Visualizes the original and reconstructed images produced by an autoencoder.
+    
     Parameters:
     - autoencoder: The trained autoencoder model used for generating reconstructions.
     - loader: DataLoader containing the dataset to visualize reconstructions for.
     """
-    plt.figure(figsize=(15, 9))  # Adjusted figure size to accommodate three rows
-
+    plt.figure(figsize=(15, 6))  
+    
     for batch in loader:
-        noisy, images = batch
-        noisy = noisy.to("cuda")
+        images, _ = batch 
         images = images.to("cuda")
 
         # Generate reconstructed images using the autoencoder
         reconstructed_images = autoencoder(images)
-        reconstructed_images = reconstructed_images.to("cuda")
 
-        for i in range(5): 
-
+        for i in range(5):  # Displaying 5 images and their reconstructions
             # Display original images
-            plt.subplot(3, 5, i + 1)
+            plt.subplot(2, 5, i+1)  
             plt.imshow(images[i].cpu().detach().numpy().reshape(28, 28), cmap="gray")
-            plt.title("Original")
-            plt.axis('off')
+            plt.title("Original")  
+            plt.axis('off')  
 
             # Display reconstructed images
-            plt.subplot(3, 5, i + 6)
+            plt.subplot(2, 5, i+6)  
             plt.imshow(reconstructed_images[i].cpu().detach().numpy().reshape(28, 28), cmap="gray")
-            plt.title("Reconstruction")
-            plt.axis('off')
-
-            # Display noisy input images
-            plt.subplot(3, 5, i + 11)
-            plt.imshow(noisy[i].cpu().detach().numpy().reshape(28, 28), cmap="gray")
-            plt.title("Noisy Input")
-            plt.axis('off')
-
-        plt.tight_layout()
-        if save_path:
-            plt.savefig(save_path)
-        else:
-            plt.show()
-        plt.close()
-
-        break
+            plt.title("Reconstruction")  
+            plt.axis('off')  
+        
+        plt.tight_layout()  
+        plt.show()
+        break  
