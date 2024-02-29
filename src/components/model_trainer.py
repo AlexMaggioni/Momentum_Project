@@ -1,6 +1,8 @@
 import torch
 import os
 import pickle
+import sys
+from models import AutoEncoder, Classifier
 
 class ModelTrainer:
     def __init__(self, model, train_loader, val_loader, criterion, optimizer, lr_scheduler, device):
@@ -8,7 +10,7 @@ class ModelTrainer:
         Initializes the ModelTrainer class with the model, data loaders, criterion, optimizer, lr_scheduler, and device.
         """
         self.device = device
-        self.model = model.to(self.device)  # Corrected from .device to .to
+        self.model = model.to(self.device)
         self.train_loader = train_loader
         self.val_loader = val_loader
         self.criterion = criterion.to(self.device)
@@ -69,11 +71,11 @@ class ModelTrainer:
         return epoch_loss
 
     def fit(self, epochs):
-
-        if isinstance(self.model, AutoEncoder):
-            model_filename = "AutoEncoder_best.pkl"
-        elif isinstance(self.model, Classifier):
-            model_filename = "Classifier_best.pkl"
+        
+        if self.model.__class__.__name__ == "AutoEncoder":
+            model_filename = "AutoEncoder_best.pth"
+        elif self.model.__class__.__name__ == "Classifier":
+            model_filename = "Classifier_best.pth"
         else:
             raise ValueError("Model type not recognized. Please provide a valid model type.")
 
@@ -89,8 +91,5 @@ class ModelTrainer:
             # Save the model if validation loss has improved
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
-
-                with open(model_path, 'wb') as f:
-                    pickle.dump(self.model, f)
-
+                torch.save(self.model, model_path)  
                 print(f"Model updated with improved validation loss: {best_val_loss:.4f}")
