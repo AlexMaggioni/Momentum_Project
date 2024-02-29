@@ -19,11 +19,13 @@ def ensure_dir(directory):
 
 def train_autoencoder():
     # Data loading
-    train = AutoEncoderDataset(train=True)
-    test = AutoEncoderDataset(train=False)
-    train, val = random_split(train, [int(len(train)*0.8), len(train)-int(len(train)*0.8)])
+    train = AutoEncoderDataset(type_data="train")
+    val = AutoEncoderDataset(type_data="val")
+    test = AutoEncoderDataset(type_data="test")
+
     train_loader = DataLoader(train, batch_size=32, shuffle=True)
     val_loader = DataLoader(val, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test, batch_size=32, shuffle=True)
 
     # Hyperparameters
     autoencoder = AutoEncoder().to(training_parameters['device'])
@@ -34,12 +36,12 @@ def train_autoencoder():
         "val_loader": val_loader,
         "criterion": nn.MSELoss(),
         "optimizer": autoencoder_optimizer,
-        "lr_scheduler": optim.lr_scheduler.StepLR(autoencoder_optimizer, step_size=10, gamma=0.1),
+        "lr_scheduler": optim.lr_scheduler.StepLR(autoencoder_optimizer, step_size=5, gamma=0.5),
         "device": "cuda" if torch.cuda.is_available() else "cpu",
     }
 
     # Training
-    EPOCHS = 20
+    EPOCHS = 40
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         autoencoder_trainer = ModelTrainer(**training_parameters)
@@ -56,11 +58,13 @@ def train_autoencoder():
 
 def train_classifier(autoencoder):
     # Data Loading
-    train = ClassifierDataset(train=True)
-    test = ClassifierDataset(train=False)
-    train, val = random_split(train, [int(len(train)*0.1), len(train)-int(len(train)*0.1)])
-    train_loader = DataLoader(train, batch_size=100, shuffle=True)
-    val_loader = DataLoader(val, batch_size=100, shuffle=True)
+    train = ClassifierDataset(type_data="train")
+    val = ClassifierDataset(type_data="val")
+    test = ClassifierDataset(type_data="test")
+
+    train_loader = DataLoader(train, batch_size=32, shuffle=True)
+    val_loader = DataLoader(val, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test, batch_size=32, shuffle=True)
 
     # Hyperparameters
     classifier = Classifier(autoencoder, 10).to(training_parameters['device'])
@@ -71,7 +75,7 @@ def train_classifier(autoencoder):
         "val_loader": val_loader,
         "criterion": nn.CrossEntropyLoss(),
         "optimizer": classifier_optimizer,
-        "lr_scheduler": optim.lr_scheduler.StepLR(classifier_optimizer, step_size=10, gamma=0.1),
+        "lr_scheduler": optim.lr_scheduler.StepLR(autoencoder_optimizer, step_size=5, gamma=0.3),
         "device": "cuda" if torch.cuda.is_available() else "cpu",
     }
 
