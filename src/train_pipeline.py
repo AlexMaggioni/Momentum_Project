@@ -29,7 +29,7 @@ def train_autoencoder():
 
     # Hyperparameters
     autoencoder = AutoEncoder().to(training_parameters['device'])
-    autoencoder_optimizer = optim.Adam(autoencoder.parameters(), lr=0.1)
+    autoencoder_optimizer = optim.Adam(autoencoder.parameters(), lr=0.01)
     training_parameters = {
         "model": autoencoder,
         "train_loader": train_loader,
@@ -68,7 +68,7 @@ def train_classifier(autoencoder):
 
     # Hyperparameters
     classifier = Classifier(autoencoder, 10).to(training_parameters['device'])
-    classifier_optimizer = optim.Adam(classifier.parameters(), lr=0.1)
+    classifier_optimizer = optim.Adam(classifier.parameters(), lr=0.01)
     training_parameters = {
         "model": classifier,
         "train_loader": train_loader,
@@ -80,7 +80,7 @@ def train_classifier(autoencoder):
     }
 
     # Training
-    EPOCHS = 50
+    EPOCHS = 100
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         classifier_trainer = ModelTrainer(**training_parameters)

@@ -2,6 +2,9 @@ import torch
 import os
 from models import AutoEncoder, Classifier
 import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix
 
 class ModelTrainer:
     def __init__(self, model, train_loader, val_loader, criterion, optimizer, lr_scheduler, device):

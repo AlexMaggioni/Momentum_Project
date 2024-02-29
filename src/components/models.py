@@ -99,12 +99,12 @@ class Classifier(nn.Module):
         super(Classifier, self).__init__()
         self.autoencoder = autoencoder
         self.fc1 = nn.Linear(1024, 512)
-        self.dropout = nn.Dropout(p=0.5) # Dropout layer to prevent overfitting
+        self.relu = nn.ReLU()
         self.fc2 = nn.Linear(512, num_classes)
 
     def forward(self, x):
         x = self.autoencoder.encode(x)
         x = self.fc1(torch.flatten(x, 1))
-        x = self.dropout(x)
-        x = self.fc2(x) # Return logits for nn.CrossEntropyLoss
+        x = self.relu(x)
+        x = self.fc2(x)  # Return logits for nn.CrossEntropyLoss
         return x
