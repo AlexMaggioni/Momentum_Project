@@ -51,7 +51,7 @@ def train_autoencoder():
 
     print("Step 3: Training Model")
     # Training
-    EPOCHS = 1
+    EPOCHS = 50
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         autoencoder_trainer = ModelTrainer(**training_parameters)
@@ -101,7 +101,7 @@ def train_classifier(autoencoder):
 
     print("Step 3: Training Model")
     # Training
-    EPOCHS = 1
+    EPOCHS = 40
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         classifier_trainer = ModelTrainer(**training_parameters)
@@ -119,5 +119,5 @@ def train_classifier(autoencoder):
 
 if __name__ == "__main__":
     test = AutoEncoder()
-    #autoencoder = train_autoencoder()
+    autoencoder = train_autoencoder()
     train_classifier(test)
