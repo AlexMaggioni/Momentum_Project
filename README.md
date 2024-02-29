@@ -26,17 +26,18 @@ The entire training pipeline is streamlined within `train_pipeline.py`, which or
 
 ### Interactive Notebooks
 
-For a more intuitive understanding of the project and its codebase, a Jupyter notebook (`baseline.ipynb`, `denoiser.ipynb`, `reconstruction.ipynb`, `test.ipynb`) is included. These notebooks provide step-by-step guidance through the project's key phases, offering insights into the methodology, code execution, and results visualization.
+For a more intuitive understanding of the project and its codebase, a Jupyter notebook is included. This notebook provide step-by-step guidance through the project's key phases, offering insights into the methodology, code execution, and results visualization.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.8+
-- PyTorch 1.8+
-- Torchvision
-- Matplotlib
-- Seaborn
+- torch
+- torchvision
+- matplotlib
+- seaborn
+- numpy
+- sklearn
 
 ### Installation
 
@@ -57,7 +58,7 @@ The project generates visualizations to illustrate learning progress and model p
 - `README.md`: Overview and guide for the project.
 - `requirements.txt`: Lists dependencies.
 - `src/`: Source code, including:
-  - Jupyter Notebooks for exploratory analysis and testing.
+  - Jupyter Notebooks for more intuitive approach.
   - `train_pipeline.py`: Centralized training and evaluation script.
   - `utils.py`: Visualization utilities.
   - `components/`: Core ML components (data loaders, model definitions, training logic).
@@ -66,4 +67,4 @@ The project generates visualizations to illustrate learning progress and model p
 
 Acknowledging the advancements in semi-supervised learning, particularly through state-of-the-art contrastive autoencoders like SimCLR, I recognize the potential for achieving superior performance with such approaches. However, due to time constraints and the limitations of my computing resources (I have a modest laptop, haha), I opted for simpler techniques in this project.
 
-Looking ahead, an intriguing direction for label-free classification would involve leveraging methodologies akin to those described in the SCAN paper ([Learning to Classify Images without Labels](https://arxiv.org/abs/2005.12320)). This approach suggests performing clustering on the latent representations derived from the autoencoder, using these clusters as proxy labels for training a classifier. Such a strategy holds promise for further reducing reliance on labeled data, aligning with the principles of unsupervised or self-supervised learning paradigms. Exploring these avenues could offer fascinating insights into efficient model training in label-scarce environments.
+If the use of labels was not permitted, I would have leveraged methodologies akin to those described in the SCAN paper ([Learning to Classify Images without Labels](https://arxiv.org/abs/2005.12320)). This approach suggests performing clustering on the latent representations derived from the autoencoder, using these clusters as proxy labels.

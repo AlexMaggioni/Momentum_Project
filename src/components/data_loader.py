@@ -29,7 +29,7 @@ class AutoEncoderDataset(Dataset):
             ])
             
         # Load the entire dataset
-        full_data = datasets.FashionMNIST(root='./data', train=True, download=True)
+        full_data = datasets.FashionMNIST(root='./data', train=(self.type != "test"), download=True)
         full_size = len(full_data)
         indices = torch.arange(full_size)
         
@@ -38,7 +38,7 @@ class AutoEncoderDataset(Dataset):
         elif self.type == "val":
             self.indices = indices[int(0.8 * full_size):]
         else: 
-            self.data = datasets.FashionMNIST(root='./data', train=False, download=True)
+            self.data = full_data
             return 
         
         # Apply indices for train/val
@@ -48,9 +48,15 @@ class AutoEncoderDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        image, label = self.data[idx]
-        image = self.transform(image)
-        return image, image
+        image, _ = self.data[idx]
+        clean_image = self.transform(image)
+        
+        # Inject Gaussian noise
+        noise = torch.randn(clean_image.size()) * 0.2  
+        noisy_image = clean_image + noise
+        noisy_image = torch.clamp(noisy_image, -1., 1.) 
+        
+        return noisy_image, clean_image
 
 
 class ClassifierDataset(Dataset):
