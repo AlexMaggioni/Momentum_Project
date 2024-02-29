@@ -49,17 +49,21 @@ pip install -r requirements.txt
 ```
 
 ### Visualizations
-The project generates visualizations to illustrate learning progress and model performance, including loss curves and accuracy trends. These are saved in the visualisation/ directory.
 
-### File Descriptions
-README.md: Overview and guide for the project.
-requirements.txt: Lists dependencies.
-src/: Source code, including:
-Jupyter Notebooks for exploratory analysis and testing.
-train_pipeline.py: Centralized training and evaluation script.
-utils.py: Visualization utilities.
-components/: Core ML components (data loaders, model definitions, training logic).
-Reflections and Future Directions
+The project generates visualizations to illustrate learning progress and model performance, including loss curves and accuracy trends. These are saved in the `visualisation/` directory.
+
+## File Descriptions
+
+- `README.md`: Overview and guide for the project.
+- `requirements.txt`: Lists dependencies.
+- `src/`: Source code, including:
+  - Jupyter Notebooks for exploratory analysis and testing.
+  - `train_pipeline.py`: Centralized training and evaluation script.
+  - `utils.py`: Visualization utilities.
+  - `components/`: Core ML components (data loaders, model definitions, training logic).
+
+## Reflections and Future Directions
+
 Acknowledging the advancements in semi-supervised learning, particularly through state-of-the-art contrastive autoencoders like SimCLR, I recognize the potential for achieving superior performance with such approaches. However, due to time constraints and the limitations of my computing resources (I have a modest laptop, haha), I opted for simpler techniques in this project.
 
-Looking ahead, an intriguing direction for label-free classification would involve leveraging methodologies akin to those described in the SCAN paper (Learning to Classify Images without Labels). This approach suggests performing clustering on the latent representations derived from the autoencoder, using these clusters as proxy labels for training a classifier. Such a strategy holds promise for further reducing reliance on labeled data, aligning with the principles of unsupervised or self-supervised learning paradigms. Exploring these avenues could offer fascinating insights into efficient model training in label-scarce environments.
+Looking ahead, an intriguing direction for label-free classification would involve leveraging methodologies akin to those described in the SCAN paper ([Learning to Classify Images without Labels](https://arxiv.org/abs/2005.12320)). This approach suggests performing clustering on the latent representations derived from the autoencoder, using these clusters as proxy labels for training a classifier. Such a strategy holds promise for further reducing reliance on labeled data, aligning with the principles of unsupervised or self-supervised learning paradigms. Exploring these avenues could offer fascinating insights into efficient model training in label-scarce environments.
