@@ -124,7 +124,7 @@ class ModelTrainer:
                 torch.save(self.model.state_dict(), model_path)
                 print(f"Model saved with improved validation loss: {best_val_loss:.4f}")
 
-    def plot_training_history(self):
+    def plot_training_history(self, save_path=None):
         """
         Plots the training and validation loss, as well as accuracy (if applicable),
         over the epochs to visualize the progress of training.
@@ -152,9 +152,14 @@ class ModelTrainer:
             plt.legend()
         
         plt.tight_layout()
-        plt.show()
 
-    def testing_and_plotting(self, test_loader):
+        if save_path:
+            plt.savefig(save_path)
+        else:
+            plt.show()
+        plt.close()
+
+    def testing_and_plotting(self, test_loader, save_path=None):
         """
         Evaluates the model on the test dataset, plots performance metrics
         including accuracy, precision, recall, F1 score, and plots an aesthetic confusion matrix.
@@ -187,6 +192,7 @@ class ModelTrainer:
         plt.ylim(0, 1)
         for i, value in enumerate(values):
             plt.text(i, value + 0.02, f"{value:.4f}", ha = 'center')
+        plt.tight_layout()
         plt.show()
 
         # Plotting confusion matrix
@@ -196,4 +202,10 @@ class ModelTrainer:
         plt.title('Confusion Matrix')
         plt.ylabel('True Label')
         plt.xlabel('Predicted Label')
-        plt.show()
+
+        if save_path:
+            plt.savefig(save_path)
+        else:
+            plt.tight_layout()
+            plt.show()
+        plt.close()

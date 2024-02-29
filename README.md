@@ -37,7 +37,7 @@ For a more intuitive understanding of the project and its codebase, a Jupyter no
 - matplotlib
 - seaborn
 - numpy
-- sklearn
+- scikit-learn
 
 ### Installation
 
