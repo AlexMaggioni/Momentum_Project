@@ -4,7 +4,6 @@ import torchvision.transforms as transforms
 
 
 class ResidualBlock(nn.Module):
-
     def __init__(self, in_channels, out_channels, stride=1):
 
         super(ResidualBlock, self).__init__()
