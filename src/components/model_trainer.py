@@ -112,7 +112,7 @@ class ModelTrainer:
             print(f'\nEpoch {epoch+1}/{epochs}\n{"-"*30}')
             self.train_one_epoch()
             val_loss = self.validate()
-            self.lr_scheduler.step()
+            self.lr_scheduler.step(val_loss)
 
             # Save the model if validation loss has improved
             if val_loss < best_val_loss:

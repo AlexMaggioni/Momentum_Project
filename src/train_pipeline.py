@@ -23,20 +23,20 @@ def train_autoencoder():
     val = AutoEncoderDataset(type_data="val")
     test = AutoEncoderDataset(type_data="test")
 
-    train_loader = DataLoader(train, batch_size=32, shuffle=True)
-    val_loader = DataLoader(val, batch_size=32, shuffle=True)
-    test_loader = DataLoader(test, batch_size=32, shuffle=True)
+    train_loader = DataLoader(train, batch_size=100, shuffle=True)
+    val_loader = DataLoader(val, batch_size=100, shuffle=True)
+    test_loader = DataLoader(test, batch_size=100, shuffle=True)
 
     # Hyperparameters
     autoencoder = AutoEncoder().to(training_parameters['device'])
-    autoencoder_optimizer = optim.Adam(autoencoder.parameters(), lr=0.001)
+    autoencoder_optimizer = optim.Adam(autoencoder.parameters(), lr=0.1)
     training_parameters = {
         "model": autoencoder,
         "train_loader": train_loader,
         "val_loader": val_loader,
         "criterion": nn.MSELoss(),
         "optimizer": autoencoder_optimizer,
-        "lr_scheduler": optim.lr_scheduler.StepLR(autoencoder_optimizer, step_size=5, gamma=0.5),
+        "lr_scheduler": optim.lr_scheduler.ReduceLROnPlateau(autoencoder_optimizer, mode='min', factor=0.1, patience=3, min_lr=0.000001),
         "device": "cuda" if torch.cuda.is_available() else "cpu",
     }
 
@@ -62,25 +62,25 @@ def train_classifier(autoencoder):
     val = ClassifierDataset(type_data="val")
     test = ClassifierDataset(type_data="test")
 
-    train_loader = DataLoader(train, batch_size=32, shuffle=True)
-    val_loader = DataLoader(val, batch_size=32, shuffle=True)
-    test_loader = DataLoader(test, batch_size=32, shuffle=True)
+    train_loader = DataLoader(train, batch_size=100, shuffle=True)
+    val_loader = DataLoader(val, batch_size=100, shuffle=True)
+    test_loader = DataLoader(test, batch_size=100, shuffle=True)
 
     # Hyperparameters
     classifier = Classifier(autoencoder, 10).to(training_parameters['device'])
-    classifier_optimizer = optim.Adam(classifier.parameters(), lr=0.001)
+    classifier_optimizer = optim.Adam(classifier.parameters(), lr=0.1)
     training_parameters = {
         "model": classifier,
         "train_loader": train_loader,
         "val_loader": val_loader,
         "criterion": nn.CrossEntropyLoss(),
         "optimizer": classifier_optimizer,
-        "lr_scheduler": optim.lr_scheduler.StepLR(autoencoder_optimizer, step_size=5, gamma=0.3),
+        "lr_scheduler": optim.lr_scheduler.ReduceLROnPlateau(autoencoder_optimizer, mode='min', factor=0.1, patience=3, min_lr=0.000001),
         "device": "cuda" if torch.cuda.is_available() else "cpu",
     }
 
     # Training
-    EPOCHS = 10
+    EPOCHS = 50
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         classifier_trainer = ModelTrainer(**training_parameters)
